@@ -13,6 +13,13 @@ class _ImageGeneratorScreenState extends State<ImageGeneratorScreen> {
   String? _imageUrl;
   bool _isLoading = false;
 
+  final Color backgroundColor = Color.fromARGB(255, 241, 190, 149);
+  final Color userBubbleColor = Color.fromARGB(255, 121, 67, 45);
+  final Color botBubbleColor = Color.fromARGB(255, 241, 227, 214);
+  final Color textUserColor = Colors.white;
+  final Color textBotColor = Colors.black87;
+  final Color inputFillColor = Color.fromARGB(255, 121, 67, 45);
+
   Future<void> _generateImage() async {
     final prompt = _controller.text.trim();
     if (prompt.isEmpty) return;
@@ -23,7 +30,7 @@ class _ImageGeneratorScreenState extends State<ImageGeneratorScreen> {
     });
 
     final url = Uri.parse('https://api.openai.com/v1/images/generations');
-    final apiKey = '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';
+    final apiKey = 'API';
 
     try {
       final response = await http.post(
@@ -65,32 +72,50 @@ class _ImageGeneratorScreenState extends State<ImageGeneratorScreen> {
   }
 
   void _copyToClipboard() {
-   if (_imageUrl != null) {
-    Clipboard.setData(ClipboardData(text: _imageUrl!));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('URL copiada al portapapeles')),
-    );
+    if (_imageUrl != null) {
+      Clipboard.setData(ClipboardData(text: _imageUrl!));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('URL copiada al portapapeles')),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('IMGen')),
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        title: Text('IMGen'),
+        backgroundColor: userBubbleColor,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
               controller: _controller,
+              style: TextStyle(color: userBubbleColor),
               decoration: InputDecoration(
                 labelText: 'imagina y crea',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: userBubbleColor),
+                filled: true,
+                fillColor: botBubbleColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: userBubbleColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: userBubbleColor, width: 2),
+                ),
               ),
             ),
             SizedBox(height: 12),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: userBubbleColor,
+                foregroundColor: textUserColor,
+              ),
               onPressed: _isLoading ? null : _generateImage,
               child: _isLoading
                   ? SizedBox(
@@ -118,7 +143,7 @@ class _ImageGeneratorScreenState extends State<ImageGeneratorScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.copy),
+                    icon: Icon(Icons.copy, color: userBubbleColor),
                     onPressed: _copyToClipboard,
                   )
                 ],

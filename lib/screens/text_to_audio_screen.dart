@@ -16,17 +16,23 @@ class _TextToAudioScreenState extends State<TextToAudioScreen> {
   String? _audioFilePath;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
+  final Color backgroundColor = Color.fromARGB(255, 241, 190, 149);
+  final Color userBubbleColor = Color.fromARGB(255, 121, 67, 45);
+  final Color botBubbleColor = Color.fromARGB(255, 241, 227, 214);
+  final Color textUserColor = Colors.white;
+  final Color textBotColor = Colors.black87;
+
   Future<void> _generateAudio() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
 
     setState(() {
       _isLoading = true;
-      _audioFilePath = null;  //
+      _audioFilePath = null;
     });
 
     final url = Uri.parse('https://api.openai.com/v1/audio/speech');
-    final apiKey = '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'; 
+    final apiKey = 'API';
 
     try {
       final response = await http.post(
@@ -87,26 +93,45 @@ class _TextToAudioScreenState extends State<TextToAudioScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Texto a Audio')),
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        title: Text('Texto a Audio'),
+        backgroundColor: userBubbleColor,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
               controller: _controller,
+              maxLines: null,
+              style: TextStyle(color: userBubbleColor),
               decoration: InputDecoration(
                 labelText: 'Escribe el texto para generar audio',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: userBubbleColor),
+                filled: true,
+                fillColor: botBubbleColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: userBubbleColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: userBubbleColor, width: 2),
+                ),
               ),
-              maxLines: null,
             ),
             const SizedBox(height: 20),
             if (_isLoading)
-              CircularProgressIndicator()
+              CircularProgressIndicator(color: userBubbleColor)
             else
               ElevatedButton.icon(
                 icon: Icon(Icons.volume_up),
                 label: Text('Generar Audio'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: userBubbleColor,
+                  foregroundColor: textUserColor,
+                ),
                 onPressed: _generateAudio,
               ),
             const SizedBox(height: 20),
@@ -114,6 +139,10 @@ class _TextToAudioScreenState extends State<TextToAudioScreen> {
               ElevatedButton.icon(
                 icon: Icon(Icons.play_arrow),
                 label: Text('Reproducir Audio'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: userBubbleColor,
+                  foregroundColor: textUserColor,
+                ),
                 onPressed: _playAudio,
               ),
           ],

@@ -8,13 +8,20 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final Color backgroundColor = Color.fromARGB(255, 241, 190, 149);
+  final Color userBubbleColor = Color.fromARGB(255, 121, 67, 45);
+  final Color botBubbleColor = Color.fromARGB(255, 241, 227, 214);
+  final Color textUserColor = Colors.white;
+  final Color textBotColor = Colors.black87;
+  final Color inputFillColor = Color.fromARGB(255, 121, 67, 45);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '1437',
       theme: ThemeData(
         primarySwatch: Colors.teal,
-        scaffoldBackgroundColor: Color(0xFFFDF6FF),
+        scaffoldBackgroundColor: backgroundColor, 
       ),
       home: MainNavigation(),
       debugShowCheckedModeBanner: false,
@@ -43,7 +50,7 @@ class _MainNavigationState extends State<MainNavigation> {
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: botBubbleColor,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
@@ -58,8 +65,8 @@ class _MainNavigationState extends State<MainNavigation> {
           borderRadius: BorderRadius.circular(30),
           child: BottomNavigationBar(
             currentIndex: _currentIndex,
-            backgroundColor: Colors.white,
-            selectedItemColor: Colors.teal,
+            backgroundColor: botBubbleColor,
+            selectedItemColor: userBubbleColor,
             unselectedItemColor: Colors.grey,
             showSelectedLabels: false,
             showUnselectedLabels: false,
@@ -87,4 +94,7 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
     );
   }
+
+  final Color userBubbleColor = Color.fromARGB(255, 121, 67, 45);
+  final Color botBubbleColor = Color.fromARGB(255, 241, 227, 214);
 }
